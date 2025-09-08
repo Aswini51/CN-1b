@@ -46,18 +46,14 @@ Client-server chat applications typically follow the client-server model, where 
 
 ```
 import socket
-from datetime import datetime
-s=socket.socket()
-s.bind(('localhost',8000))
-s.listen(5)
-c,addr=s.accept()
-print("Client Address : ",addr)
-now = datetime.now()
-c.send(now.strftime("%d/%m/%Y %H:%M:%S").encode())
-ack=c.recv(1024).decode()
-if ack:
- print(ack)
-c.close()
+
+s = socket.socket()
+s.connect(('localhost', 6000))  
+s.send(b"Hello from client!")
+data = s.recv(1024).decode()
+print("Server says:", data)
+s.close()
+
 ```
 
 ## Communication Protocols:
@@ -69,11 +65,18 @@ User authentication mechanisms are essential to ensure secure and authorized acc
 
 ```
 import socket
-s=socket.socket()
-s.connect(('localhost',8000))
-print(s.getsockname())
-print(s.recv(1024).decode())
-s.send("acknowledgement recived from the server".encode())
+
+s = socket.socket()
+s.bind(('localhost', 6000))  
+s.listen(1)
+print("Server is listening...")
+
+conn, addr = s.accept()
+print("Connected by", addr)
+data = conn.recv(1024).decode()
+print("Client says:", data)
+conn.send(b"Hello from server!")
+conn.close()
 ```
 
 •	Socket Handling: The server manages incoming client connections using sockets, creating a separate thread or process for each connected client.
