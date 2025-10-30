@@ -46,13 +46,18 @@ Client-server chat applications typically follow the client-server model, where 
 
 ```
 import socket
-
-s = socket.socket()
-s.connect(('localhost', 6000))  
-s.send(b"Hello from client!")
-data = s.recv(1024).decode()
-print("Server says:", data)
-s.close()
+from datetime import datetime
+s=socket.socket()
+s.bind(('localhost',8000))
+s.listen(5)
+c,addr=s.accept()
+print("Client Address : ",addr)
+now = datetime.now()
+c.send(now.strftime("%d/%m/%Y %H:%M:%S").encode())
+ack=c.recv(1024).decode()
+if ack:
+    print(ack)
+c.close()
 
 ```
 
@@ -65,18 +70,11 @@ User authentication mechanisms are essential to ensure secure and authorized acc
 
 ```
 import socket
-
-s = socket.socket()
-s.bind(('localhost', 6000))  
-s.listen(1)
-print("Server is listening...")
-
-conn, addr = s.accept()
-print("Connected by", addr)
-data = conn.recv(1024).decode()
-print("Client says:", data)
-conn.send(b"Hello from server!")
-conn.close()
+s=socket.socket()
+s.connect(('localhost',8000))
+print(s.getsockname())
+print(s.recv(1024).decode())
+s.send("acknowledgementrecivedfromtheserver".encode())
 ```
 
 •	Socket Handling: The server manages incoming client connections using sockets, creating a separate thread or process for each connected client.
@@ -103,9 +101,9 @@ Client-server chat applications are foundational to real-time communication over
 
 ## OUTPUT:
 
-<img width="1920" height="1200" alt="Screenshot (56)" src="https://github.com/user-attachments/assets/f8a9b2a1-b57f-4abd-b619-22b66d104aed" />
+<img width="1265" height="187" alt="image" src="https://github.com/user-attachments/assets/ad05e98b-82fc-4660-b57d-0f3d3f76eefd" />
 
 ## RESULT:
 
-Thus the study on Client Server Chat Applications has been performed
+Thus the study on Client Server Chat Applications has been performed.
 
